@@ -1,0 +1,18 @@
+# Levanta MySQL 8.0 sin instalar nada en la máquina.
+#   docker compose up -d
+#   docker compose exec -T db mysql -u root -panalista < sql/01_schema.sql
+services:
+  db:
+    image: mysql:8.0
+    container_name: distribuidora_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: analista
+      MYSQL_DATABASE: mayorista
+    ports:
+      - "3307:3306"        # 3307 en el host para no chocar con un MySQL local
+    volumes:
+      - ./sql:/sql
+      - mysqldata:/var/lib/mysql
+    command: --local-infile=1
+volumes:
+  mysqldata:
